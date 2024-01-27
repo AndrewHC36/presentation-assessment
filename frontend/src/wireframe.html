@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ffffff;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            text-align: left;
+
+        }
+
+        .app-name {
+            font-size: 28px;
+            font-weight: bold;
+            /* text-decoration: none; */
+            background-color: red;
+            
+            background-image: linear-gradient(0.25turn, #50b9ff, #0099ff, #50b9ff);
+            
+            background-size: 100%;
+            background-repeat: repeat;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; 
+            -moz-background-clip: text;
+            -moz-text-fill-color: transparent;
+        }
+
+        /* Rest of your styles for the content area */
+        .content {
+            margin-top: 80px; /* Adjust to match the height of your header */
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="app-name">Presentation Analyzer</a>
+    </header>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #app-container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #upload-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #upload-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #3db5ff;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        #score-section {
+            text-align: center;
+        }
+
+        #feedback-section {
+            margin-top: 20px;
+        }
+
+        #feedback-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .feedback-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <h1>Presentation Analyzer</h1>
+
+        <div id="upload-section">
+            <button id="upload-btn">Upload Presentation</button>
+        </div>
+
+        <div id="score-section">
+            <h2>Presentation Scores</h2>
+            <!-- Display scores here -->
+        </div>
+
+        <div id="feedback-section">
+            <h2>Feedback Examples</h2>
+            <ul id="feedback-list">
+                <!-- Display feedback items here -->
+                <li class="feedback-item">Clear and concise speech.</li>
+                <li class="feedback-item">Engaging delivery style.</li>
+                <!-- Add more feedback items as needed -->
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
