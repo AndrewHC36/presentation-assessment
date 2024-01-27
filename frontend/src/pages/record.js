@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ReactMic } from 'react-mic';
-
-import './record.css';
+import { saveAs } from 'file-saver';
 
 const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -24,36 +23,25 @@ const Record = () => {
     };
   }, [isRecording]);
 
+  const onData = (recordedBlob) => {
+    setAudioChunks((prevChunks) => [...prevChunks, recordedBlob.blob]);
+  };
+
+  const onStop = () => {
+    if (audioChunks.length > 0) {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+      saveAs(audioBlob, `recorded_audio_${new Date().toISOString()}.mp3`);
+      setAudioChunks([]);
+    }
+  };
+
   const startRecording = () => {
     setIsRecording(true);
     setTimer(0);
-    setAudioChunks([]); // Clear previous audio chunks
   };
 
   const stopRecording = () => {
     setIsRecording(false);
-    // You can now use the audioChunks to generate a download link or send it to a server for further processing.
-    downloadAudio();
-  };
-
-  const onData = (recordedBlob) => {
-    // Handle the audio data, e.g., store it in state
-    setAudioChunks((prevChunks) => [...prevChunks, recordedBlob.blob]);
-  };
-
-  const downloadAudio = () => {
-    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-    const audioUrl = URL.createObjectURL(audioBlob);
-
-    const link = document.createElement('a');
-    link.href = audioUrl;
-    link.download = `recorded_audio_${new Date().toISOString()}.wav`;
-    document.body.appendChild(link);
-    link.click();
-
-    // Clean up
-    document.body.removeChild(link);
-    URL.revokeObjectURL(audioUrl);
   };
 
   const formatTime = (seconds) => {
@@ -62,13 +50,33 @@ const Record = () => {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
   };
 
+  const visualSettings = {
+    showFrequency: true,  // Set to false to hide frequency bar
+    showWaveform: true,   // Set to false to hide waveform
+    visualizerWidth: 400, // Adjust the width of the visualizer
+    visualizerHeight: 100, // Adjust the height of the visualizer
+    backgroundColor: '#ffffff', // Change the background color
+    strokeColor: '#000000',    // Change the stroke color
+    strokeWidth: 2,            // Adjust the stroke width
+    fill: true,                // Set to false to disable fill
+    fillParent: true,          // Set to false to disable fill parent
+    magnitudeMode: 'sensitive', // Change the magnitude mode ('sensitive' or 'rigid')
+  };
+
   return (
     <div className="app">
       <button onClick={isRecording ? stopRecording : startRecording}>
         {isRecording ? 'Stop Recording' : 'Start Recording'}
       </button>
       <div className="timer">Timer: {formatTime(timer)}</div>
-      {isRecording && <ReactMic record={isRecording} onStop={() => {}} onData={onData} strokeColor="#000000" className="react-mic" />}
+      <ReactMic
+        record={isRecording}
+        onStop={onStop}
+        onData={onData}
+        strokeColor="#000000"
+        backgroundColor="#ffffff"
+        visualSetting={visualSettings}
+      />
     </div>
   );
 };
