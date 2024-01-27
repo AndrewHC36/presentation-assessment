@@ -11,7 +11,7 @@ const App = () => {
           <ul className="nav-links">
           <a href="#" className="nav-link">Home</a>
             <a href="#" className="nav-link">About</a>
-            <a href="#" className="nav-link">Developers</a>
+            <a href="#" className="nav-link">Contact</a>
           </ul>
         </div>
       </header>
@@ -20,7 +20,7 @@ const App = () => {
         <h1>Presentation Analyzer</h1>
 
         <div id="upload-section">
-          <button id="upload-btn">Upload Presentation</button>
+          <button id="upload-btn">Start Recording</button>
         </div>
 
         <div id="score-section">
