@@ -4,7 +4,7 @@ import CanvasDraw from 'react-canvas-draw';
 
 import './record.css';
 
-const App = () => {
+const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [timer, setTimer] = useState(0);
   const canvasRef = useRef();
@@ -47,12 +47,14 @@ const App = () => {
       />
     </div>
   );
+
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
 };
 
-const formatTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-};
-
-export default App;
+export default Record;
