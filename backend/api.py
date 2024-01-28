@@ -37,13 +37,13 @@ def upload_audio():
             return redirect(url_for('download_file', name = filename))
 
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
     # testing
 
     # the free api only checks for spelling
-    result = analyze("I love IrvineHacks! And I've yes to eat my breakfast. I forgot, becuase I dont know.")
-    print("RESULT:")
-    print(result)
-    score = score_generator(result)
-    print("SCORE:")
-    print(score)
+    #result = analyze("I love IrvineHacks! And I've yes to eat my breakfast. I forgot, becuase I dont know.")
+    #print("RESULT:")
+    #print(result)
+    #score = score_generator(result)
+    #print("SCORE:")
+    #print(score)
