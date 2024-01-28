@@ -21,15 +21,7 @@ class ProWritingAidAnalysis:
     errors: list[ErrorTag]
     filler_word_counts: int
 
-
-def analyze(transcription: str) -> ProWritingAidAnalysis:
-    configuration = ProWritingAidSDK.Configuration()
-
-    configuration.api_key['licenseCode'] = '5FE9BDA7-A576-4887-A7F0-840F49043575'
-    configuration.host = 'https://api.prowritingaid.com'
-
-    api_instance = ProWritingAidSDK.TextApi(ProWritingAidSDK.ApiClient('https://api.prowritingaid.com'))
-    
+def filler(transcription: str) -> ProWritingAidAnalysis:
     raw_words = transcription.split(" ")
     total = len(raw_words)
     filler_words = raw_words.count("uh")+raw_words.count("just")+raw_words.count("like")+ \
@@ -51,6 +43,16 @@ def analyze(transcription: str) -> ProWritingAidAnalysis:
     else:
         return("You might want to use less filler words. {}% of your presentation is filler words!".format(percentage))
 
+
+
+def analyze(transcription: str) -> ProWritingAidAnalysis:
+    configuration = ProWritingAidSDK.Configuration()
+
+    configuration.api_key['licenseCode'] = '5FE9BDA7-A576-4887-A7F0-840F49043575'
+    configuration.host = 'https://api.prowritingaid.com'
+
+    api_instance = ProWritingAidSDK.TextApi(ProWritingAidSDK.ApiClient('https://api.prowritingaid.com'))
+    
     req = ProWritingAidSDK.TextAnalysisRequest(
         transcription,
         [
@@ -91,7 +93,7 @@ def analyze(transcription: str) -> ProWritingAidAnalysis:
         print("Exception when calling TextApi->get: %s\n" % e)
 
 if __name__ == '__main__':
-    print (analyze("alright you know when when you uh like you know like that's uh and you \
+    print (filler("alright you know when when you uh like you know like that's uh and you \
         you you when you you you uh you you do the things so that uh you yeah yes uh indeed")) #this will be a variable later on
 
 #test cases
