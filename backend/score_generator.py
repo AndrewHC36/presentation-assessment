@@ -10,9 +10,7 @@ def score_generator(analysis: AnalysisResult) -> float:
         # https://www.w3.org/International/multilingualweb/lt/drafts/its20/its20.html#lqissue-typevalues
         match err.issue_type:
             case "misspelling":
-                factor = 1.0
-            case _:
-                factor = 0.2
+                factor = 5.0
 
         score -= size*factor
 
