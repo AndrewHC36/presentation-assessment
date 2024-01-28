@@ -1,0 +1,29 @@
+.results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .loading {
+    font-size: 24px;
+  }
+  
+  .result-content {
+    text-align: center;
+  }
+  
+  .percentage {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 5px;
+  }
+  
