@@ -3,6 +3,8 @@ import { ReactMic } from 'react-mic';
 import { saveAs } from 'file-saver';
 import MicRecorder from 'mic-recorder-to-mp3';
 
+const BASE_URL = "http://127.0.0.1:5000";
+
 const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -70,7 +72,7 @@ const Record = () => {
     recorder
       .start()
       .then(() => {
-        this.setState({ isRecording: true });
+        
       }).catch((e) => console.error(e));
   };
 
@@ -80,23 +82,27 @@ const Record = () => {
     recorder
       .stop()
       .getMp3()
-      .then(([buffer, blob]) => {
+      .then(async ([buffer, blob]) => {
         const blobURL = URL.createObjectURL(blob);
         console.log("=====");
         console.log(blob);
         console.log(buffer);
         console.log(blobURL);
-        const binaryString = btoa(blobURL)
-        console.log(binaryString);
 
-        // var blob = new Blob(buffer, { type: "audio/mp3" } );
+        var blob = new Blob(buffer, { type: "audio/mp3" } );
         var bUrl = window.URL.createObjectURL(blob);
 
         setAudioURL(bUrl);
 
-        // send the download link to the console
-        console.log('mp3 download:', bUrl);
-        // this.setState({ blobURL, isRecording: false });
+        // let photo = document.getElementById("image-file").files[0];
+        let formData = new FormData();
+
+        formData.append("audio_file", blob, "./filename.mp3");
+        fetch(BASE_URL+"/upload_audio", {method: "POST", body: formData}).then(res => {
+          console.log("SUCCESS", res.text())
+        });
+
+        URL.revokeObjectURL(blob)
       }).catch((e) => console.log(e));
   };
 
