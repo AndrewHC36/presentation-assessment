@@ -17,7 +17,11 @@ def score_generator(analysis: TranscriptionData) -> float:
     i = analyze(analysis)
     for num in range(len(weights)):
         total += weights[num] * i[num]
-    return  round((99 - ((50*total)/word + (filler(analysis))/2)))
+    score = round((99 - ((50*total)/word + (filler(analysis))/2)))
+    if (score >= 11):
+        return score
+    else:
+        return 11
 
 
 print(score_generator("Along the way, he must face like a host of mythological like enemies determined to stop him. Most like of all, he must come to terms um with a uh father he has never known, and an Oracle that has warned him of betrayal by a friend."))
