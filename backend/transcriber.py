@@ -58,4 +58,4 @@ def transcriber(fpath: Path) -> str:
 
 
 if __name__ == '__main__':
-    result = transcriber(Path("./audio/ums_and_uhs.flac"))
+    result = transcriber(Path("audio/old/ums_and_uhs.flac"))

@@ -58,11 +58,9 @@ const Record = () => {
     navigator.getUserMedia({ audio: true },
       () => {
         console.log('Permission Granted');
-        // this.setState({ isBlocked: false });
       },
       () => {
         console.log('Permission Denied');
-        // this.setState({ isBlocked: true })
       },
     );
 
@@ -94,10 +92,9 @@ const Record = () => {
 
         setAudioURL(bUrl);
 
-        // let photo = document.getElementById("image-file").files[0];
         let formData = new FormData();
 
-        formData.append("audio_file", blob, "./filename.mp3");
+        formData.append("audio_file", blob, "./audio_recording.mp3");
         fetch(BASE_URL+"/upload_audio", {method: "POST", body: formData}).then(res => {
           console.log("SUCCESS", res.text())
         });

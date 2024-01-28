@@ -13,9 +13,12 @@ def transcriber(fpath: Path) -> str:
             "Authorization": "Token b7d9cf74ae136b9cf8bf4532352358ff830533df",
         }
     )
-    print(res.json())
+    data = res.json()
+    print(data)
+    # return data["results"]["channels"][]
+
 
 if __name__ == '__main__':
-    result = transcriber(Path("./audio/ums_and_uhs_2.flac"))
+    result = transcriber(Path("audio/old/ums_and_uhs_2.flac"))
     print(result)
 

@@ -1,11 +1,14 @@
 import os
 import subprocess
 from pathlib import Path
+import time
 
 from flask import Flask, request, flash, redirect, url_for
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 
+import analyzer_prowritingaid
+import transcriber_deepgram
 from analyzer import analyze
 from score_generator import score_generator
 
@@ -21,6 +24,11 @@ app.secret_key = "SECRET_KEY"
 
 
 def process_data(fpath: str) -> "Data":
+    transcription = transcriber_deepgram.transcriber(Path(fpath))
+    print("TRANSCRIPTION:")
+    print(transcription)
+    # analysis = analyzer_prowritingaid.analyze(transcription)
+
     return 45
 
 
@@ -52,13 +60,15 @@ def upload_audio():
             print("FILE EXISTS AND ALLOWED")
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            flac_fname = f"{time.time_ns()}.flac"
             subprocess.run([
                 "ffmpeg", "-i",
                 os.path.join(app.config['UPLOAD_FOLDER'], filename),
-                os.path.join(app.config['UPLOAD_FOLDER'], Path(filename).stem+".flac"),
+                os.path.join(app.config['UPLOAD_FOLDER'], flac_fname),
             ])
             # return redirect(url_for('download_file', name = filename))
-            return f"{process_data(Path(filename).stem+'.flac')}"
+            return f"{process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))}"
 
 
 #if __name__ == '__main__':
