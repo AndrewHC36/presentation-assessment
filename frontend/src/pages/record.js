@@ -6,6 +6,8 @@ const Record = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [timer, setTimer] = useState(0);
   const [audioChunks, setAudioChunks] = useState([]);
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [audioURL, setAudioURL] = useState(null);
 
   useEffect(() => {
     let interval;
@@ -29,8 +31,18 @@ const Record = () => {
 
   const onStop = () => {
     if (audioChunks.length > 0) {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-      saveAs(audioBlob, `recorded_audio_${new Date().toISOString()}.mp3`);
+      const blob = new Blob(audioChunks, { type: 'audio/mp3' });
+      setAudioBlob(blob);
+
+      // Save the audio blob as a download
+      saveAs(blob, `recorded_audio_${new Date().toISOString()}.mp3`);
+
+      // Create a URL for the audio blob and set it to the state
+      const audioUrl = URL.createObjectURL(blob);
+      console.log(audioURL)
+      setAudioURL(audioUrl);
+
+      // Clear the audio chunks
       setAudioChunks([]);
     }
   };
@@ -47,20 +59,8 @@ const Record = () => {
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
+    console.log(remainingSeconds)
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  };
-
-  const visualSettings = {
-    showFrequency: true,  // Set to false to hide frequency bar
-    showWaveform: true,   // Set to false to hide waveform
-    visualizerWidth: 400, // Adjust the width of the visualizer
-    visualizerHeight: 100, // Adjust the height of the visualizer
-    backgroundColor: '#ffffff', // Change the background color
-    strokeColor: '#000000',    // Change the stroke color
-    strokeWidth: 2,            // Adjust the stroke width
-    fill: true,                // Set to false to disable fill
-    fillParent: true,          // Set to false to disable fill parent
-    magnitudeMode: 'sensitive', // Change the magnitude mode ('sensitive' or 'rigid')
   };
 
   return (
@@ -69,14 +69,15 @@ const Record = () => {
         {isRecording ? 'Stop Recording' : 'Start Recording'}
       </button>
       <div className="timer">Timer: {formatTime(timer)}</div>
-      <ReactMic
-        record={isRecording}
-        onStop={onStop}
-        onData={onData}
-        strokeColor="#000000"
-        backgroundColor="#ffffff"
-        visualSetting={visualSettings}
-      />
+      <ReactMic record={isRecording} onStop={onStop} onData={onData} strokeColor="#0099ff" />
+      {audioURL && (
+        <div>
+          <audio controls>
+            <source src={audioURL} type="audio/mp3" />
+            Your browser does not support the audio tag.
+          </audio>
+        </div>
+      )}
     </div>
   );
 };

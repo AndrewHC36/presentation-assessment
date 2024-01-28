@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import Record from "./pages/record";
+import Results from './pages/results'
 
 const App = () => {
   return (
@@ -12,9 +13,9 @@ const App = () => {
           <div className="nav-bar">
             <a href="#" className="app-name">Presentation Analyzer</a>
             <ul className="nav-links">
-              <a href="#" className="nav-link">Home</a>
-              <a href="#" className="nav-link">About</a>
-              <a href="#" className="nav-link">Contact</a>
+              <a href="" className="nav-link">Home</a>
+              <a href="about" className="nav-link">About</a>
+              <a href="contact" className="nav-link">Contact</a>
             </ul>
           </div>
         </header>
