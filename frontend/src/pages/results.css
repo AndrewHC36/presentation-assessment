@@ -1,29 +1,82 @@
+/* Results.css */
+
 .results-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .loading {
-    font-size: 24px;
-  }
-  
-  .result-content {
-    text-align: center;
-  }
-  
-  .percentage {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  li {
-    margin-bottom: 5px;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.loading-ui {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px;
+}
+
+.overall-score {
+  margin-bottom: 30px;
+}
+
+.overall-score h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.overall-score p {
+  font-size: 36px;
+  color: #ff00ff; /* Green color, change as needed */
+}
+
+.category-scores {
+  margin-bottom: 30px;
+}
+
+.category-scores h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.category-scores ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.category-scores li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.feedback-section h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.feedback-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.feedback-section li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.pie-container {
+  position: relative;
+  display: inline-block;
+}
+
+.pie-container svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pie-container .overall-score {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
