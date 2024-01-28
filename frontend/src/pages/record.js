@@ -99,7 +99,9 @@ const Record = () => {
 
         formData.append("audio_file", blob, "./audio_recording.mp3");
         fetch(BASE_URL+"/upload_audio", {method: "POST", body: formData}).then(res => {
-          console.log("SUCCESS", res.text())
+          res.json().then((data) => {
+            console.log("SUCCESS", data)
+          })
         });
 
         URL.revokeObjectURL(blob)

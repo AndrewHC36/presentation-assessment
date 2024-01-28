@@ -11,7 +11,13 @@ from werkzeug.utils import secure_filename
 
 
 import transcriber_deepgram
+from analyzer_prowritingaid import filler, analyze
+from score_generator import score_generator
 
+
+ERROR_CATEGORIES = [
+    "repeat0"
+]
 
 @dataclass
 class AssessmentResult:
@@ -23,19 +29,28 @@ class AssessmentResult:
 
 def process_data(fpath: str) -> Optional[AssessmentResult]:
     transcription = transcriber_deepgram.transcriber(Path(fpath))
-    print("TRANSCRIPTION:")
-    print(transcription)
-    # analysis = analyzer_prowritingaid.analyze(transcription)
+    print("TRANSCRIPTION:", transcription)
 
     if len(transcription.alternatives) > 0:
-        return AssessmentResult(
-            transcript = transcription.alternatives[0].transcript,
-            general_score = 50,
-            error_locations = [
+        transcript = transcription.alternatives[0].transcript
+        filler_ratio = filler(transcript)
+        (issue_scores, issue_type_pos) = analyze(transcript)
+        general_score = score_generator(transcript, issue_scores, filler_ratio)
+        print("FILLER RATIO:", filler_ratio)
+        print("ISSUE SCORE:", issue_scores)
+        print("ISSUE TYPE & POS:", issue_type_pos)
+        print("GENERAL SCORE:", general_score)
 
+        # analysis = analyzer_prowritingaid.analyze(transcription)
+
+        return AssessmentResult(
+            transcript = transcript,
+            general_score = general_score,
+            error_locations = [
+                (start, end) for (start, end, kind) in issue_type_pos if kind in ERROR_CATEGORIES
             ],
             warning_locations = [
-
+                (start, end) for (start, end, kind) in issue_type_pos if kind not in ERROR_CATEGORIES
             ],
         )
     else:

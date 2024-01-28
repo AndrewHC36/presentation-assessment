@@ -7,20 +7,20 @@ from transcriber_deepgram import TranscriptionData, transcriber
 #first_alt_transcript = result.alternatives[0].transcript
 
 
-def score_generator(analysis: TranscriptionData) -> float:
+def score_generator(transcript: str, issue_scores: list[int], filler_ratio: float) -> int:
     score = 100
     total = 0
     weights = [2, 2, 2, 2, 3]
 
-    word = getTotal(analysis)
+    word = getTotal(transcript)
 
-    i = analyze(analysis)
+    # i = analyze(analysis)
     for num in range(len(weights)):
-        total += weights[num] * i[num]
-    return  round((99 - ((50*total)/word + (filler(analysis))/2)))
+        total += weights[num] * issue_scores[num]
+    return round(99 - ((50*total)/word + (filler_ratio/2)))
 
 
-print(score_generator("Along the way, he must face like a host of mythological like enemies determined to stop him. Most like of all, he must come to terms um with a uh father he has never known, and an Oracle that has warned him of betrayal by a friend."))
+# print(score_generator("Along the way, he must face like a host of mythological like enemies determined to stop him. Most like of all, he must come to terms um with a uh father he has never known, and an Oracle that has warned him of betrayal by a friend."))
 
 
 # def score_generator1(analysis: AnalysisResult) -> float:
