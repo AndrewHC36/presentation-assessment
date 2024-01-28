@@ -21,21 +21,17 @@ class ProWritingAidAnalysis:
     errors: list[ErrorTag]
     filler_word_counts: int
 
-
-def analyze(transcription: str) -> ProWritingAidAnalysis:
-    configuration = ProWritingAidSDK.Configuration()
-
-    configuration.api_key['licenseCode'] = '5FE9BDA7-A576-4887-A7F0-840F49043575'
-    configuration.host = 'https://api.prowritingaid.com'
-
-    api_instance = ProWritingAidSDK.TextApi(ProWritingAidSDK.ApiClient('https://api.prowritingaid.com'))
-    
-    raw_words = transcription.lower().split(" ")
+def filler(transcription: str) -> ProWritingAidAnalysis:
+    raw_words = transcription.split(" ")
     total = len(raw_words)
     filler_words = raw_words.count("uh")+raw_words.count("just")+raw_words.count("like")+ \
         raw_words.count("mm-mm")+raw_words.count("uh-uh")+raw_words.count("uh-huh")+ \
         raw_words.count("nuh-uh")+raw_words.count("basically")+raw_words.count("um")+\
-        raw_words.count("mhmm")+raw_words.count("actually")+raw_words.count("right")
+        raw_words.count("mhmm")+raw_words.count("actually")+raw_words.count("right")+\
+        raw_words.count("Uh")+ raw_words.count("Just")+raw_words.count("Like")+ \
+        raw_words.count("Mm-mm")+raw_words.count("Uh-uh")+raw_words.count("Uh-huh")+ \
+        raw_words.count("Nuh-uh")+raw_words.count("Basically")+raw_words.count("Um")+\
+        raw_words.count("Mhmm")+raw_words.count("Actually")+raw_words.count("Right")
     percentage = (round(filler_words/total * 100))
 
     if(percentage <= 5):
@@ -47,6 +43,16 @@ def analyze(transcription: str) -> ProWritingAidAnalysis:
     else:
         return("You might want to use less filler words. {}% of your presentation is filler words!".format(percentage))
 
+
+
+def analyze(transcription: str) -> ProWritingAidAnalysis:
+    configuration = ProWritingAidSDK.Configuration()
+
+    configuration.api_key['licenseCode'] = '5FE9BDA7-A576-4887-A7F0-840F49043575'
+    configuration.host = 'https://api.prowritingaid.com'
+
+    api_instance = ProWritingAidSDK.TextApi(ProWritingAidSDK.ApiClient('https://api.prowritingaid.com'))
+    
     req = ProWritingAidSDK.TextAnalysisRequest(
         transcription,
         [
@@ -87,7 +93,7 @@ def analyze(transcription: str) -> ProWritingAidAnalysis:
         print("Exception when calling TextApi->get: %s\n" % e)
 
 if __name__ == '__main__':
-    print (analyze("alright you know when when you uh like you know like that's uh and you \
+    print (filler("alright you know when when you uh like you know like that's uh and you \
         you you when you you you uh you you do the things so that uh you yeah yes uh indeed")) #this will be a variable later on
 
 #test cases
