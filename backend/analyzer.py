@@ -60,17 +60,17 @@ def analyze(transcription: str) -> AnalysisResult:
 
     data = resp.json()
 
-    # print("LANG:", data["language"])
-    # for m in data["matches"]:
-    #     print("ERROR MATCHED")
-    #     print("Message:", m["message"])
-    #     print("Short Message:", m["shortMessage"])
-    #     print("Replacements:", m["replacements"])
-    #     print("Error Offset:", m["offset"])
-    #     print("Error Length:", m["length"])  # could be used for assessment
-    #     print("Context:", m["context"])
-    #     print("ISSUE TYPE:", m["rule"]["issueType"])  # could be used for assessment
-    #     # print("CATEGORY:", m["rule"]["category"])  # could be used for assessment
+    print("LANG:", data["language"])
+    for m in data["matches"]:
+        print("ERROR MATCHED")
+        print("Message:", m["message"])
+        print("Short Message:", m["shortMessage"])
+        print("Replacements:", m["replacements"])
+        print("Error Offset:", m["offset"])
+        print("Error Length:", m["length"])  # could be used for assessment
+        print("Context:", m["context"])
+        print("ISSUE TYPE:", m["rule"]["issueType"])  # could be used for assessment
+        print("CATEGORY:", m["rule"]["category"])  # could be used for assessment
 
     return AnalysisResult(
         detected_lang = data["language"]["detectedLanguage"]["code"],
@@ -85,4 +85,7 @@ def analyze(transcription: str) -> AnalysisResult:
             for m in data["matches"]
         ]
     )
+if __name__ == '__main__':
+    print(analyze("alright you know when when you uh like you know like that's uh and you \
+    you you when you you you uh you you do the things so that uh you yeah yes uh indeed"))
 
