@@ -55,7 +55,8 @@ def transcriber(fpath: Path) -> TranscriptionData:
     )
 
 
-if __name__ == '__main__':
-    result = transcriber(Path("audio/old/ums_and_uhs_2.flac"))
-    print(result)
+# if __name__ == '__main__':
+
+#     transcriber(Path("audio/old/ums_and_uhs_2.flac"))
+#     return(result)
 

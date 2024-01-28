@@ -71,11 +71,11 @@ def upload_audio():
                 os.path.join(app.config['UPLOAD_FOLDER'], filename),
                 os.path.join(app.config['UPLOAD_FOLDER'], flac_fname),
             ])
-            # return f"{process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))}"
+            return f"{process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))}"
             return {
                 "valid": True,
                 "general_score": 45,  # out of a 100
-                ""
+                
             }
 
 
