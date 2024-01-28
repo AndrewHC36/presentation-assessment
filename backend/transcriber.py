@@ -1,10 +1,12 @@
+from pathlib import Path
+
 import requests
 from google.cloud import speech_v1
 import base64
 
 
-def transcriber() -> str:
-    with open("./audio/sample.wav", "rb") as fobj:
+def transcriber(fpath: Path) -> str:
+    with open(fpath, "rb") as fobj:
         fdata = fobj.read()
 
     audio_blob = base64.b64encode(fdata)
@@ -14,7 +16,7 @@ def transcriber() -> str:
 
     config = speech_v1.RecognitionConfig()
     config.audio_channel_count = 1
-    config.encoding = "LINEAR16"
+    config.encoding = "FLAC"
     config.sample_rate_hertz = 48000
     config.language_code = "en-US"
     config.enable_word_time_offsets = False
@@ -56,4 +58,4 @@ def transcriber() -> str:
 
 
 if __name__ == '__main__':
-    result = transcriber()
+    result = transcriber(Path("./audio/ums_and_uhs.flac"))
