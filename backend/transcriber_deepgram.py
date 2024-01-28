@@ -33,11 +33,11 @@ def transcriber(fpath: Path) -> TranscriptionData:
         }
     )
     data = res.json()
-    print(data)
+    # print(data)
     # return data["results"]["channels"][]
 
     return TranscriptionData(
-        duration = data["duration"],
+        duration = data["metadata"]["duration"],
         alternatives = [
             TranscriptionAlternatives(
                 transcript = alt["transcript"],

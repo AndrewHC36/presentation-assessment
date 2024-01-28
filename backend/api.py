@@ -39,7 +39,7 @@ def allowed_file(filename):
 @cross_origin()
 def upload_audio():
     if request.method == 'POST':
-        print(f"REQ FILES: {request.files}")
+        # print(f"REQ FILES: {request.files}")
 
         # check if the post request has the file part
         if 'audio_file' not in request.files:
@@ -49,7 +49,7 @@ def upload_audio():
                 "message": "No file part"
             }
         file = request.files['audio_file']
-        print(f"FILE: {file.filename}")
+        # print(f"FILE: {file.filename}")
 
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
@@ -61,7 +61,6 @@ def upload_audio():
             }
 
         if file and allowed_file(file.filename):
-            print("FILE EXISTS AND ALLOWED")
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
@@ -71,11 +70,21 @@ def upload_audio():
                 os.path.join(app.config['UPLOAD_FOLDER'], filename),
                 os.path.join(app.config['UPLOAD_FOLDER'], flac_fname),
             ])
-            # return f"{process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))}"
+            _ = process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))
             return {
                 "valid": True,
                 "general_score": 45,  # out of a 100
-                ""
+                "transcript": "Uh uh uh uh uh yes",
+                "errors": [  # red underline
+                    [0, 3],  # character position in the transcript
+                    [6, 14],
+                    [16, 22],
+                ],
+                "warnings": [  # yellow underline
+                    [0, 3],  # character position in the transcript
+                    [6, 14],
+                    [16, 22],
+                ],
             }
 
 

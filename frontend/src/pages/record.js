@@ -97,13 +97,8 @@ const Record = () => {
 
         let formData = new FormData();
 
-<<<<<<< HEAD
         formData.append("audio_file", blob, "./audio_recording.mp3");
         fetch(BASE_URL+"/upload_audio", {method: "POST", body: formData}).then(res => {
-=======
-        formData.append("audio_file", blob, "./filename.mp3");
-        fetch(BASE_URL + "/upload_audio", { method: "POST", body: formData }).then(res => {
->>>>>>> main
           console.log("SUCCESS", res.text())
         });
 
