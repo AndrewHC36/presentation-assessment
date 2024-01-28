@@ -4,7 +4,7 @@ import './results.css';
 
 // Simulated data (replace with your actual data)
 const resultsData = {
-  overallScore: 75,
+  overallScore: 70,
   categories: [
     { name: "Content", score: 80 },
     { name: "Delivery", score: 70 },
@@ -45,7 +45,7 @@ const Pie = ({ percentage, colour, scoreAnimation }) => {
   const pct = cleanPercentage(percentage);
   return (
     <div className="pie-container">
-      <svg width={200} height={200}>
+      <svg width={310} height={200}>
         <g transform={`rotate(-90 ${"100 100"})`}>
           <Circle colour="lightgrey" />
           <Circle colour={colour} percentage={pct} />
@@ -81,6 +81,18 @@ const Results = () => {
     loadData();
   }, [setScoreAnimation]);
 
+  function colorPicker (overallScore) {
+    if (overallScore < 60) {
+      return '#D81D13'
+    }
+    else if (overallScore < 80) {
+      return '#EFC700'
+    }
+    else {
+      return '#009950'
+    }
+  }
+
   return (
     <div className="results-container">
       {loading ? (
@@ -89,11 +101,16 @@ const Results = () => {
         <>
           <div className="App">
             <h2>Overall Presentation Score</h2>
-            <Pie percentage={resultsData.overallScore} colour="#0099ff" scoreAnimation={scoreAnimation} />
-          <div className="overall-score">
-            <animated.p>{scoreAnimation.score.interpolate(score => `${Math.round(score)}%`)}</animated.p>
+            <div className='overall-score' width={310} height={200}>
+              <Pie percentage={resultsData.overallScore} colour={colorPicker(resultsData.overallScore)} scoreAnimation={scoreAnimation} />
+              <div className="overall-score-container">
+                <animated.p className="overall-score-text">
+                  {scoreAnimation.score.interpolate(score => `${Math.round(score)}%`)}
+                </animated.p>
+              </div>
+            </div>
           </div>
-          </div>
+
 
           <div className="category-scores">
             <h2>Category Scores</h2>
