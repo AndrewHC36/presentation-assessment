@@ -2,15 +2,45 @@ import os
 import subprocess
 from pathlib import Path
 import time
+from dataclasses import dataclass
+from typing import Optional
 
 from flask import Flask, request, flash, redirect, url_for
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 
-import analyzer_prowritingaid
+
 import transcriber_deepgram
-from analyzer import analyze
-from score_generator import score_generator
+
+
+@dataclass
+class AssessmentResult:
+    transcript: str
+    general_score: int  # 5 to 99
+    error_locations: list[(int, int)]  # start pos, end pos
+    warning_locations: list[(int, int)]  # start pos, end pos
+
+
+def process_data(fpath: str) -> Optional[AssessmentResult]:
+    transcription = transcriber_deepgram.transcriber(Path(fpath))
+    print("TRANSCRIPTION:")
+    print(transcription)
+    # analysis = analyzer_prowritingaid.analyze(transcription)
+
+    if len(transcription.alternatives) > 0:
+        return AssessmentResult(
+            transcript = transcription.alternatives[0].transcript,
+            general_score = 50,
+            error_locations = [
+
+            ],
+            warning_locations = [
+
+            ],
+        )
+    else:
+        return None
+
 
 
 UPLOAD_FOLDER = './audio'
@@ -21,15 +51,6 @@ cors = CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.secret_key = "SECRET_KEY"
-
-
-def process_data(fpath: str) -> "Data":
-    transcription = transcriber_deepgram.transcriber(Path(fpath))
-    print("TRANSCRIPTION:")
-    print(transcription)
-    # analysis = analyzer_prowritingaid.analyze(transcription)
-
-    return 45
 
 
 def allowed_file(filename):
@@ -70,22 +91,26 @@ def upload_audio():
                 os.path.join(app.config['UPLOAD_FOLDER'], filename),
                 os.path.join(app.config['UPLOAD_FOLDER'], flac_fname),
             ])
-            _ = process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))
-            return {
-                "valid": True,
-                "general_score": 45,  # out of a 100
-                "transcript": "Uh uh uh uh uh yes",
-                "errors": [  # red underline
-                    [0, 3],  # character position in the transcript
-                    [6, 14],
-                    [16, 22],
-                ],
-                "warnings": [  # yellow underline
-                    [0, 3],  # character position in the transcript
-                    [6, 14],
-                    [16, 22],
-                ],
-            }
+            assessment_result = process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))
+            if assessment_result is not None:
+                return {
+                    "valid": True,
+                    "general_score": assessment_result.general_score,
+                    "transcript": assessment_result.transcript,
+                    "errors": [  # red underline
+                        [s, e]
+                        for (s, e) in assessment_result.error_locations
+                    ],
+                    "warnings": [  # yellow underline
+                        [s, e]
+                        for (s, e) in assessment_result.warning_locations
+                    ],
+                }
+            else:
+                return {
+                    "valid": False,
+                    "message": "No transcription available due to unintelligible audio"
+                }
 
 
 #if __name__ == '__main__':

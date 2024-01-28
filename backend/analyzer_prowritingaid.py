@@ -27,7 +27,7 @@ def getTotal(transcription: str) -> ProWritingAidAnalysis:
     return word_count
 
 
-def filler(transcription: str) -> ProWritingAidAnalysis:
+def filler(transcription: str) -> float:
     raw_words = transcription.split(" ")
     word_count = len(raw_words)
     filler_words_count = raw_words.count("uh")+raw_words.count("just")+raw_words.count("like")/2+ \
