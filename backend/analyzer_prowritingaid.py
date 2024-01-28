@@ -21,6 +21,8 @@ class ProWritingAidAnalysis:
     errors: list[ErrorTag]
     filler_word_count: int
 
+
+
 def filler(transcription: str) -> ProWritingAidAnalysis:
     raw_words = transcription.split(" ")
     word_count = len(raw_words)

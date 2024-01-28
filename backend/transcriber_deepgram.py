@@ -1,7 +1,26 @@
 from pathlib import Path
 import requests
+from dataclasses import dataclass
 
-def transcriber(fpath: Path) -> str:
+
+@dataclass
+class WordDurations:
+    word: str
+    start: float
+    end: float
+
+@dataclass
+class TranscriptionAlternatives:
+    transcript: str
+    word_timestamps: list[WordDurations]
+
+@dataclass
+class TranscriptionData:
+    duration: float
+    alternatives: list[TranscriptionAlternatives]
+
+
+def transcriber(fpath: Path) -> TranscriptionData:
     with open(fpath, "rb") as fobj:
         fdata = fobj.read()
 
@@ -16,6 +35,24 @@ def transcriber(fpath: Path) -> str:
     data = res.json()
     print(data)
     # return data["results"]["channels"][]
+
+    return TranscriptionData(
+        duration = data["duration"],
+        alternatives = [
+            TranscriptionAlternatives(
+                transcript = alt["transcript"],
+                word_timestamps = [
+                    WordDurations(
+                        word = wd["word"],
+                        start = wd["start"],
+                        end = wd["end"],
+                    )
+                    for wd in alt["words"]
+                ]
+            )
+            for alt in data["results"]["channels"][0]["alternatives"]
+        ]
+    )
 
 
 if __name__ == '__main__':

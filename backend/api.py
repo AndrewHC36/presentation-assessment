@@ -44,8 +44,10 @@ def upload_audio():
         # check if the post request has the file part
         if 'audio_file' not in request.files:
             flash('No file part')
-            # return redirect(request.url)
-            return "<p>No file part</p>"
+            return {
+                "valid": False,
+                "message": "No file part"
+            }
         file = request.files['audio_file']
         print(f"FILE: {file.filename}")
 
@@ -53,8 +55,10 @@ def upload_audio():
         # empty file without a filename.
         if file.filename == '':
             flash('No selected file')
-            # return redirect(request.url)
-            return "<p>No selected file</p>"
+            return {
+                "valid": False,
+                "message": "No selected file"
+            }
 
         if file and allowed_file(file.filename):
             print("FILE EXISTS AND ALLOWED")
@@ -67,8 +71,12 @@ def upload_audio():
                 os.path.join(app.config['UPLOAD_FOLDER'], filename),
                 os.path.join(app.config['UPLOAD_FOLDER'], flac_fname),
             ])
-            # return redirect(url_for('download_file', name = filename))
-            return f"{process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))}"
+            # return f"{process_data(os.path.join(app.config['UPLOAD_FOLDER'], flac_fname))}"
+            return {
+                "valid": True,
+                "general_score": 45,  # out of a 100
+                ""
+            }
 
 
 #if __name__ == '__main__':

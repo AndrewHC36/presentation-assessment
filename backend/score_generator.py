@@ -1,7 +1,17 @@
 from analyzer import AnalysisResult
 from analyzer_prowritingaid import filler, analyze
+from transcriber_deepgram import TranscriptionData
 
-def score_generator(analysis: str) -> float:
+
+"""
+
+    # vvvvvvv
+    first_alt_transcript = result.alternatives[0].transcript
+
+"""
+
+
+def score_generator(analysis: TranscriptionData) -> float:
     score = 100
     total = 0
     weights = [2, 2, 2, 2, 3]
