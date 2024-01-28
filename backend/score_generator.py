@@ -1,14 +1,10 @@
 from analyzer import AnalysisResult
-from analyzer_prowritingaid import filler, analyze
-from transcriber_deepgram import TranscriptionData
+from analyzer_prowritingaid import filler, analyze, getTotal
+from transcriber_deepgram import TranscriptionData, transcriber
 
 
-"""
-
-    # vvvvvvv
-    first_alt_transcript = result.alternatives[0].transcript
-
-"""
+#result = transcriber(filepath)
+#first_alt_transcript = result.alternatives[0].transcript
 
 
 def score_generator(analysis: TranscriptionData) -> float:
@@ -16,11 +12,12 @@ def score_generator(analysis: TranscriptionData) -> float:
     total = 0
     weights = [2, 2, 2, 2, 3]
 
+    word = getTotal(analysis)
 
     i = analyze(analysis)
     for num in range(len(weights)):
         total += weights[num] * i[num]
-    return (100 - (total + filler(analysis)))
+    return  round((99 - ((50*total)/word + (filler(analysis))/2)))
 
 
 print(score_generator("Along the way, he must face like a host of mythological like enemies determined to stop him. Most like of all, he must come to terms um with a uh father he has never known, and an Oracle that has warned him of betrayal by a friend."))
