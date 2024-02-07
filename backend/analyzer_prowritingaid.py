@@ -95,8 +95,8 @@ def analyze(transcription: str) -> (list[int], list[(int, int, str)]):
         # data = api_instance.post(api_response.task_id)
         # print(data)
 
-        print("ERRORS")
-        print(errors)
+        #print("ERRORS")
+        #print(errors)
 
         return (
             issue_scores,

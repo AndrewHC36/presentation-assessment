@@ -23,8 +23,27 @@ def score_generator(transcript: str, issue_scores: list[int], filler_ratio: floa
         else:
             return 11
 
+def improvement_message(transcript: str) -> str:
+    nums = (analyze(transcript))
+    a = nums[0][0]
+    b = nums[0][1]
+    c = nums[0][2]
+    d = nums[0][3]
+    e = nums[0][4]
+    if a == (max(a,b,c,d,e)):
+        return "Pay more attention to your grammar!"
+    elif b == (max(a,b,c,d,e)):
+        return "Speak in a more active voice!"
+    elif c == (max(a,b,c,d,e)):
+        return "Avoid using the same words too much!"
+    elif d == (max(a,b,c,d,e)):
+        return "Avoid using the same phrases too much!"
+    else:
+        return "Be more specific and precise!"
+        
 
-# print(score_generator("Along the way, he must face like a host of mythological like enemies determined to stop him. Most like of all, he must come to terms um with a uh father he has never known, and an Oracle that has warned him of betrayal by a friend."))
+#"grammar", "passive", "overused", "wordsphrases", "vague"],
+#print(improvement_message("Along the way, he must face like a host of mythological like enemies determined to stop him. Most like of all, he must come to terms um with a uh father he has never known, and an Oracle that has warned him of betrayal by a friend."))
 
 
 # def score_generator1(analysis: AnalysisResult) -> float:
