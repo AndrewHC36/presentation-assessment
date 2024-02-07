@@ -101,6 +101,7 @@ const Record = () => {
         fetch(BASE_URL+"/upload_audio", {method: "POST", body: formData}).then(res => {
           res.json().then((data) => {
             console.log("SUCCESS", data)
+            this.props.setData(data);
           })
         });
 
@@ -120,6 +121,9 @@ const Record = () => {
 
   return (
     <div className="app">
+      <script src="record.js"></script>
+      <script src="result.js"></script>
+
       <button onClick={isRecording ? stopRecording : startRecording}>
         {isRecording ? 'Stop Recording' : 'Start Recording'}
       </button>

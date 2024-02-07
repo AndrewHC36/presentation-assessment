@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSpring, animated } from 'react-spring';
+// import data from './record.js';
 import './results.css';
 
 // Simulated data (replace with your actual data)
 const resultsData = {
-  overallScore: 70,
+  overallScore: 45,
   categories: [
     { name: "Content", score: 80 },
     { name: "Delivery", score: 70 },
@@ -58,30 +59,35 @@ const Pie = ({ percentage, colour, scoreAnimation }) => {
   );
 };
 
-const Results = () => {
-  const [loading, setLoading] = useState(true);
-  const [scoreAnimation, setScoreAnimation] = useSpring(() => ({
-    score: 0,
-    from: { score: 0 },
-  }));
 
-  useEffect(() => {
-    // Simulate asynchronous data loading
-    const loadData = async () => {
-      // Simulate loading time
-      await new Promise(resolve => setTimeout(resolve, 2000));
+class Results extends React.Component {
+  constructor(props) {
+    super(props);
 
-      // Data loaded, update loading state
-      setLoading(false);
+    const [loading, setLoading] = useState(true);
+    const [scoreAnimation, setScoreAnimation] = useSpring(() => ({
+      score: 0,
+      from: { score: 0 },
+    }));
 
-      // Animate the overall score
-      setScoreAnimation({ score: resultsData.overallScore });
-    };
+    useEffect(() => {
+      // Simulate asynchronous data loading
+      const loadData = async () => {
+        // Simulate loading time
+        await new Promise(resolve => setTimeout(resolve, 6000));
+  
+        // Data loaded, update loading state
+        setLoading(false);
+  
+        // Animate the overall score
+        setScoreAnimation({ score: this.props.data["general_score"] });
+      };
+  
+      loadData();
+    }, [setScoreAnimation]);
+  }
 
-    loadData();
-  }, [setScoreAnimation]);
-
-  function colorPicker (overallScore) {
+  colorPicker (overallScore) {
     if (overallScore < 60) {
       return '#D81D13'
     }
@@ -93,49 +99,65 @@ const Results = () => {
     }
   }
 
-  return (
-    <div className="results-container">
-      {loading ? (
-        <div className="loading-ui">Loading...</div>
-      ) : (
-        <>
-          <div className="App">
-            <h2>Overall Presentation Score</h2>
-            <div className='overall-score' width={310} height={200}>
-              <Pie percentage={resultsData.overallScore} colour={colorPicker(resultsData.overallScore)} scoreAnimation={scoreAnimation} />
-              <div className="overall-score-container">
-                <animated.p className="overall-score-text">
-                  {scoreAnimation.score.interpolate(score => `${Math.round(score)}%`)}
-                </animated.p>
+  render() {
+    return (
+      <div className="results-container">
+        {loading ? (
+          <div className="loading-ui">Loading...</div>
+        ) : (
+          <>
+            <div className="App">
+              <h2>Overall Presentation Score</h2>
+              <div className='overall-score' width={310} height={200}>
+                <Pie percentage={this.props.data["general_score"]} colour={colorPicker(this.props.data["general_score"])} scoreAnimation={scoreAnimation} />
+                <div className="overall-score-container">
+                  <animated.p className="overall-score-text">
+                    {scoreAnimation.score.interpolate(score => `${Math.round(score)}%`)}
+                  </animated.p>
+                </div>
               </div>
             </div>
-          </div>
+  
+  
+            <div className="category-scores">
+              <h2>Category Scores</h2>
+              <ul>
+                {resultsData.categories.map((category, index) => (
+                  <li key={index}>
+                    <span>{category.name}</span>
+                    <span>{category.score}%</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+  
+            <div className="feedback-section">
+              <h2>Feedback</h2>
+              <ul>
+                {resultsData.feedback.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+}
 
 
-          <div className="category-scores">
-            <h2>Category Scores</h2>
-            <ul>
-              {resultsData.categories.map((category, index) => (
-                <li key={index}>
-                  <span>{category.name}</span>
-                  <span>{category.score}%</span>
-                </li>
-              ))}
-            </ul>
-          </div>
 
-          <div className="feedback-section">
-            <h2>Feedback</h2>
-            <ul>
-              {resultsData.feedback.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
+// const Results = () => {
+  // const [loading, setLoading] = useState(true);
+  // const [scoreAnimation, setScoreAnimation] = useSpring(() => ({
+  //   score: 0,
+  //   from: { score: 0 },
+  // }));
+
+ 
+
+
+// };
 
 export default Results;
